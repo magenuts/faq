@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>FAQ Category</title>
+    </head>
+    <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">Magenuts_Faq::faqcat</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Magenuts\Faq\Block\Adminhtml\Faqcat\Edit" name="faqcat_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Magenuts\Faq\Block\Adminhtml\Faqcat\Edit\Tabs" name="faqcat_edit_tabs">
+                <block class="Magenuts\Faq\Block\Adminhtml\Faqcat\Edit\Tab\Form" name="faqcat_edit_tab_form"/>
+                <block class="Magenuts\Faq\Block\Adminhtml\Faqcat\Edit\Tab\Metasection"
+                       name="faqcat_edit_tab_metadetails"/>
+                <block class="Magenuts\Faq\Block\Adminhtml\Faqcat\Edit\Tab\Visibility" name="faq_edit_tab_visibility"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">faqcat_edit_tab_form</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">additional_section</argument>
+                    <argument name="block" xsi:type="string">faqcat_edit_tab_metadetails</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">visibility_section</argument>
+                    <argument name="block" xsi:type="string">faq_edit_tab_visibility</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

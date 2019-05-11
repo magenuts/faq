@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magenuts_Faq::css/faq.css"/>
+        <css src="Magenuts_Faq::css/font-awesome.css"/>
+    </head>
+    <body>
+        <referenceContainer name="columns.top">
+            <block class="Magenuts\Faq\Block\Faq\FaqDescription" name="description" before="content"
+                   template="Magenuts_Faq::faq/description.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Magenuts\Faq\Block\Faq\FaqSearch" name="faqsearch"
+                   template="Magenuts_Faq::faq/search.phtml"/>
+            <block class="Magenuts\Faq\Block\Faq\FaqList" name="faqcollapse" template="faq/list.phtml"/>
+            <!-- <block class="Magenuts\Faq\Block\Faq\FaqTop" name="faqtop" template="faq/tops.phtml"/> -->
+        </referenceContainer>
+        <referenceContainer name="sidebar.main">
+            <block class="Magenuts\Faq\Block\Faq\FaqCategoryTree" ifconfig="faq/general/category_navigation_menu"
+                   name="faq.categorytree.left" template="Magenuts_Faq::faq/category/sidebar.phtml"/>
+            <block class="Magenuts\Faq\Block\Faq\FaqTop" ifconfig="faq/general/top_question_navigation_menu"
+                   name="faqtop" template="faq/tops.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="sidebar.additional">
+            <block class="Magenuts\Faq\Block\Faq\FaqTop" name="faqtop" template="faq/tops.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="wishlist_sidebar" remove="true"/>
+    </body>
+</page>

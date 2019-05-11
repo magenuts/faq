@@ -1,0 +1,233 @@
+<form id="faq-search-form" action="" class="styled" method="post">
+    <h4><?php echo __('Search FAQ'); ?>:</h4>
+    <fieldset>
+        <input type="text"
+               placeholder="Search FAQ"
+               class="text-input"
+               id="faq-search"
+               value=""/>
+        <span id="faq-search-count"></span>
+        <a id="faq-reset" href="javascript:;"><?php echo __('Reset'); ?></a>
+    </fieldset>
+</form>
+<script>
+    require(['jquery', 'highlight', 'collapse'], function ($) {
+        var highlight_settings = {className: 'faq-highlight', element: 'span'};
+        if (Nextbits.Faqpage.mode == 'collapsed') {
+            $("h2").each(function () {
+                $('.faqpage_category').attr("aria-expanded", "false");
+                $('.faqpage_questions').attr("aria-hidden", "true");
+                $('.faqpage_questions').css("display", "none");
+            });
+            new jQueryCollapse($("#faqpage"), {
+                open: function () {
+                    this.slideDown(150);
+                },
+                close: function () {
+                    this.slideUp(150);
+                }
+            });
+            new jQueryCollapse($(".faqpage_question_wrapper"), {
+                open: function () {
+                    this.slideDown(150);
+                },
+                close: function () {
+                    this.slideUp(150);
+                }
+            });
+            var openQuestion = function (hash) {
+                if (hash.indexOf('faq_') > -1) {
+                    $('#faq_' + hash.split('_')[1] + ' a').trigger('open');
+                    $(hash + ' a').trigger('open');
+
+                    window.location.hash = hash;
+                }
+            }
+            openQuestion(window.location.hash);
+            $('.faqpage_side_block a').click(function () {
+                openQuestion('#' + $(this).attr('href').split('#')[1]);
+                return false;
+            });
+            $("#faq-search").keyup(function () {
+                $('.faqpage-container').unhighlight(highlight_settings);
+                var filter = $(this).val(),
+                    count = 0,
+                    found_title = false,
+                    found_body = false;
+                $(".faqpage_question_wrapper").each(function () {
+                    found_title = $(
+                        '.faqpage_question', this
+                    ).text().search(
+                        new RegExp(filter, "i")
+                    );
+                    found_body = $(
+                        '.faqpage_answer', this
+                    ).text().search(
+                        new RegExp(filter, "i")
+                    );
+
+                    if (found_title < 0 && found_body < 0) {
+                        $("> h3 a", this).trigger('close');
+                    } else {
+                        $("> h3 a", this).trigger('open');
+                        $(this).parent().prev().find("a").trigger('open');
+                        count++;
+                    }
+                });
+                $(".faqpage_category.open").each(function () {
+                    if (!$(this).next().find(
+                            '.faqpage_question.open'
+                        ).length
+                    ) {
+                        $('a', this).trigger('close');
+                    }
+                });
+                $("#faq-search-count").text(
+                    count + Nextbits.Faqpage.translate.results
+                );
+                $('.faqpage-container').highlight(filter, highlight_settings);
+
+            });
+            $('#faq-reset').click(function () {
+                $("#faq-search").val('');
+                $('.faqpage-container').unhighlight(highlight_settings);
+                $("#faq-search-count").text('');
+                return false;
+            });
+        } else if (Nextbits.Faqpage.mode == 'expanded') {
+            $("h2").each(function () {
+                $('.faqpage_questions').slideDown(150);
+                $(".faqpage_questions").trigger("open");
+                $('.faqpage_questions').attr("aria-expanded", "true");
+                $('.faqpage_question_block').css("display", "block");
+            });
+
+            $("#faq-search").keyup(function () {
+                $('.faqpage-container').
+                unhighlight(highlight_settings);
+                var filter = $(this).val(),
+                    count = 0,
+                    found_title = false,
+                    found_body = false;
+                $(".faqpage_question_block").each(function () {
+                    found_title = $(
+                        'h3.faqpage_question',
+                        this
+                    ).text().search(
+                        new RegExp(filter, "i")
+                    );
+                    found_body = $(
+                        '.faqpage_answer', this
+                    ).text().search(
+                        new RegExp(filter, "i")
+                    );
+                    if (found_title < 0 && found_body < 0) {
+                        $(this).fadeOut();
+                    } else {
+                        $(this).show();
+                        count++;
+                    }
+                });
+                $("#faq-search-count").text(
+                    count + Nextbits.Faqpage.translate.results
+                );
+                $('.faqpage-container').highlight(filter, highlight_settings);
+            });
+            $('#faq-reset').click(function () {
+                $("#faq-search").val('');
+                $(".faqpage_question_block").show();
+                $('.faqpage-container').unhighlight(highlight_settings);
+                $("#faq-search-count").text('');
+                return false;
+            });
+            $('.faqpage_list_categories a').click(function () {
+                $('#faq-reset').trigger('click');
+                return true;
+            });
+        } else {
+            if (Display.Page.mode == 'category') {
+                $("h2").each(function () {
+                    $(".faqpage_questions:first").slideDown(150);
+                    $('.faqpage_question').addClass("open");
+                    $('.faqpage_question').attr("aria-expanded", "true");
+                    $('.faqpage_question_block').css("display", "block");
+                });
+            } else {
+                $(".faqpage_question_wrapper:first").slideDown(150);
+                $('.faqpage_question:first').addClass("open");
+            }
+            new jQueryCollapse($("#faqpage"), {
+                open: function () {
+                    this.slideDown(150);
+                },
+                close: function () {
+                    this.slideUp(150);
+                }
+            });
+            new jQueryCollapse($(".faqpage_question_wrapper"), {
+                open: function () {
+                    this.slideDown(150);
+                },
+                close: function () {
+                    this.slideUp(150);
+                }
+            });
+            var openQuestion = function (hash) {
+                if (hash.indexOf('faq_') > -1) {
+                    $('#faq_' + hash.split('_')[1] + ' a').trigger('open');
+                    $(hash + ' a').trigger('open');
+
+                    window.location.hash = hash;
+                }
+            }
+            openQuestion(window.location.hash);
+            $('.faqpage_side_block a').click(function () {
+                openQuestion('#' + $(this).attr('href').split('#')[1]);
+                return false;
+            });
+            $("#faq-search").keyup(function () {
+                $('.faqpage-container').unhighlight(highlight_settings);
+                var filter = $(this).val(),
+                    count = 0,
+                    found_title = false,
+                    found_body = false;
+                $(".faqpage_question_wrapper").each(function () {
+                    found_title = $(
+                        '.faqpage_question', this
+                    ).text().search(
+                        new RegExp(filter, "i")
+                    );
+                    found_body = $(
+                        '.faqpage_answer', this
+                    ).text().search(
+                        new RegExp(filter, "i")
+                    );
+
+                    if (found_title < 0 && found_body < 0) {
+                        $("> h3 a", this).trigger('close');
+                    } else {
+                        $("> h3 a", this).trigger('open');
+                        $(this).parent().prev().find("a").trigger('open');
+                        count++;
+                    }
+                });
+                $(".faqpage_category.open").each(function () {
+                    if (!$(this).next().find('.faqpage_question.open').length) {
+                        $('a', this).trigger('close');
+                    }
+                });
+                $("#faq-search-count").text(
+                    count + Nextbits.Faqpage.translate.results
+                );
+                $('.faqpage-container').highlight(filter, highlight_settings);
+
+            });
+            $('#faq-reset').click(function () {
+                $("#faq-search").val('');
+                $('.faqpage-container').unhighlight(highlight_settings);
+                $("#faq-search-count").text('');
+                return false;
+            });
+        }
+    });
+</script>

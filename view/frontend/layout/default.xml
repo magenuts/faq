@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="top.links">
+            <block class="Magenuts\Faq\Block\Links\Link" name="faq-link" ifconfig="faq/general/header_link"/>
+        </referenceBlock>
+        <referenceBlock name="footer_links">
+            <block class="Magenuts\Faq\Block\Links\Link" name="faq-link-footer" ifconfig="faq/general/footer_link"/>
+        </referenceBlock>
+    </body>
+</page>
