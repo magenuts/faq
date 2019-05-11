@@ -1,0 +1,80 @@
+<form id="imageForm" name="form"
+      action="<?php echo $this->getUrl("faq/faq/import/"); ?>"
+      method="post"
+      enctype="multipart/form-data"
+      data-hasrequired="<?php echo __('* Required Fields') ?>">
+    <input type="hidden"
+           name="form_key"
+           value="<?php echo $this->getFormKey(); ?>"/>
+    <div class="actions-toolbar" style="float: left;">
+        <div class="primary">
+            <input type="file"
+                   class="upload"
+                   id="filename"
+                   name="uploadFile"
+                   accept=".csv">
+            <div class="button" style="float: right;">
+                <button type="submit"
+                        id="submitbutton"
+                        title="Import"
+                        class="action submit primary">
+                    <span><?php echo __('Import') ?></span>
+                </button>
+            </div>
+            <div class="require" style="display: none;">
+                <span><?php echo __('please choose your file.') ?></span>
+            </div>
+            <div class="csv" style="display: none;">
+                <span><?php echo __('please choose only csv file.') ?></span>
+            </div>
+        </div>
+        <div class="admin__field-control" style="margin-top: 10px;">
+            <a href="<?php echo $this->getImageMediaUrl(); ?>"
+               target="_blank"><?php echo __('Sample File'); ?></a>
+        </div>
+    </div>
+</form>
+<script>
+    require(["jquery"], function ($) {
+        $('.button #submitbutton').click(function () {
+            var file = $('input[type="file"]').val();
+            var exit = ['.csv'];
+            if (file == '') {
+                var get_ext = file.split('.');
+                get_ext = get_ext.reverse();
+                if ($.inArray(get_ext[0].toLowerCase(), exit) > -1) {
+                    alert('Allowed extension!');
+                } else {
+                    $(".require").css(
+                        {
+                            "display": "block",
+                            "color": "red",
+                            "margin-top": "10px"
+                        }
+                    ).show();
+                    return false;
+                }
+            }
+        })
+        $('.upload').click(function () {
+            $(".require").css("display", "none").hide();
+            $(".csv").css("display", "none").hide();
+            $(".button").css("display", "block").show();
+        })
+
+        $("#filename").change(function (e) {
+            var ext = $("input#filename").val().split(".").pop().toLowerCase();
+            if ($.inArray(ext, ["csv"]) == -1) {
+                $(".csv").css(
+                    {
+                        "display": "block",
+                        "color": "red",
+                        "margin-top": "10px"
+                    }
+                ).show();
+                $(".button").css("display", "none").hide();
+                return false;
+            }
+        })
+    })
+</script>

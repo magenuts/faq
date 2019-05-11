@@ -1,0 +1,124 @@
+<div class="link">
+    <a id="expandall" href="javascript:;"><?php echo __("Expand All") ?></a>
+    <a id="collapseall" href="javascript:;"><?php echo __("Collapse All") ?></a>
+</div>
+<div class="faqpage_default faqpage-container">
+    <?php $categoryId = $this->getRequest()->getParam("cat"); ?>
+    <?php $faqs = $this->getFaqs($categoryId); ?>
+    <?php if ($categoryId): ?>
+        <?php $category = $this->getFaqcategories($categoryId); ?>
+        <h2 class="faqpage_category">
+            <div class="view-category"><?php echo $category->getName(); ?></div>
+        </h2>
+    <?php endif; ?>
+    <?php if (count($faqs->getData()) > 0): ?>
+        <div class="faqpage_questions">
+            <?php foreach ($faqs as $faq): ?>
+                <div class="faqpage_question_wrapper">
+                    <h3 class="faqpage_question"
+                        id="faq_<?php echo $faq->getFaqId(); ?>">
+                        <div id="que_<?php echo $faq->getFaqId(); ?>">
+                            <p><a class="faq-question" href="javascript:;"
+                                  id="<?php echo 'faq_' . $faq->getFaqId(); ?>"><span
+                                        class="fa fa-caret-right">&nbsp;</span>
+                                    <?php echo $faq->getTitle(); ?>
+                                </a></p>
+                        </div>
+                    </h3>
+                    <div class="faqpage_question_block"
+                         id="<?php echo "faq_" . $faq->getFaqId() . '_answer'; ?>">
+                        <div class="faqpage_answer"
+                             id="<?php echo $faq->getFaqId(); ?>">
+                            <p><?php echo $faq->getDescription() ?></p>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+        <div class="available">
+            <p><?php echo __("There is no FAQ's Available") ?></p>
+        </div>
+    <?php endif; ?>
+</div>
+<?php
+$config = $this->helper('\Magenuts\Faq\Helper\Data')->getView();
+$displayMode = $this->getDisplayMode();
+?>
+<script>
+    if (typeof Nextbits == "undefined") var Nextbits = {};
+    if (typeof Nextbits.Faqpage == "undefined") Nextbits.Faqpage = {};
+    Nextbits.Faqpage.mode = '<?php echo $config; ?>';
+    Nextbits.Faqpage.translate = {};
+    Nextbits.Faqpage.translate.results = '<?php echo __(' results found.'); ?>';
+
+    if (typeof Display == "undefined") var Display = {};
+    if (typeof Display.Page == "undefined") Display.Page = {};
+    Display.Page.mode = '<?php echo $displayMode; ?>';
+
+    require(['jquery'], function ($) {
+        if (Display.Page.mode == 'category') {
+            $('.faqpage_questions').hide();
+            $('h2').click(function () {
+                $(this).toggleClass("open");
+                $(this).next().toggle();
+            });
+            $('#expandall').click(function () {
+                $('.faqpage_questions').slideDown(150);
+                $('.faqpage_question').addClass("open");
+                $('.faqpage_question').attr("aria-expanded", "true");
+                $('.faqpage_question_block').removeClass("close");
+                $('.faqpage_question_block').css("display", "block");
+            });
+			if('<?php echo $config; ?>' == 'expanded'){
+				$(".faq-question").click(function () {
+					var id = $(this).attr('id');
+					$('#' + id + '_answer').toggleClass("close");
+					$('#' + id + '_answer').css("display", "block");
+					$('.faq-question').attr("aria-expanded", "true");
+					$('.faq-question').css("display", "block");
+					$('.faq-question').attr("aria-hidden", "true");
+				});
+			}else{
+				$(".faq-question").click(function () {
+					var id = $(this).attr('id');
+					$('#' + id + '_answer').toggleClass("open");
+					$('#' + id + '_answer').css("display", "block");
+					$('.faq-question').attr("aria-expanded", "true");
+					$('.faq-question').css("display", "block");
+					$('.faq-question').attr("aria-hidden", "true");
+				});
+			}
+            $('#collapseall').click(function () {
+                $('.faqpage_question_block').hide();
+                $('.faqpage_question').removeClass("open");
+            });
+        } else {
+            $('#expandall').click(function () {
+                $('.faqpage_questions').slideDown(150);
+                $('.faqpage_question').addClass("open");
+                $('.faqpage_question').attr("aria-expanded", "true");
+                $('.faqpage_question_block').removeClass("close");
+                $('.faqpage_question_block').css("display", "block");
+            });
+            $(".faq-question").click(function () {
+                var id = $(this).attr('id');
+                $('#' + id + '_answer').toggleClass("close");
+                $('#' + id + '_answer').css("display", "block");
+                $('.faq-question').attr("aria-expanded", "true");
+                $('.faq-question').css("display", "block");
+                $('.faq-question').attr("aria-hidden", "true");
+            });
+            $('#collapseall').click(function () {
+                $('.faqpage_question_block').hide();
+                $('.faqpage_question').removeClass("open");
+
+            });
+        }
+    });
+</script>
+<style>
+    .close {
+        display: none !important;
+    }
+</style>

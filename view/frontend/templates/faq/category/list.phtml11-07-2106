@@ -1,0 +1,42 @@
+<?php $categories = $block->getCategoryTree(); ?>
+<?php $faqCategories = $this->getFaqcategory(); ?>
+<?php $currentStoreName = $this->getCurrentStoreName(); ?>
+<?php $pageUrl = $this->getPageUrl(); ?>
+<div id="sidebars">
+    <div class="widget widget_categories">
+        <div class="category">
+        <?php echo __('Categories');?>
+        </div>
+        <ul class="form-group">
+            <?php foreach ($categories as $categoryId => $categoryData): ?>
+                <?php $categoryArray = explode("*", $categoryData, 2); ?>
+                <?php $categoryUrl = $categoryArray[0];
+                $categoryName = $categoryArray[1]; ?>
+                <?php $categoryName = str_replace(
+                    '&nbsp;', '', $categoryName
+                ); ?>
+                <li onclick="moveright(this)"
+                    class="cat-item cat-item-<?php echo $categoryId; ?>">
+                    <?php
+                    if (!empty($categoryUrl)): ?>
+                        <a href="<?php echo $block->getCategoryUrl(
+                            $categoryUrl
+                        ); ?>"
+                           class="faq-link faq-navigator first active">
+                            <?php echo $categoryName; ?>
+                        </a>
+                    <?php else: ?>
+                        <a href="<?php echo $this->getUrl() .
+                            $pageUrl .
+                            "/category/categorylist/cat/" .
+                            $categoryId; ?>"
+                           class="faq-link faq-navigator first active">
+                            <?php echo $categoryName; ?>
+                        </a>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+

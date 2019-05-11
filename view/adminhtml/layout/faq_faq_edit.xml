@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>FAQ Manager</title>
+    </head>
+    <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">Magenuts_Faq::faq</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Magenuts\Faq\Block\Adminhtml\Faq\Edit" name="faqcat_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Magenuts\Faq\Block\Adminhtml\Faq\Edit\Tabs" name="faq_edit_tabs">
+                <block class="Magenuts\Faq\Block\Adminhtml\Faq\Edit\Tab\Form" name="faq_edit_tab_form"/>
+                <block class="Magenuts\Faq\Block\Adminhtml\Faq\Edit\Tab\Metasection" name="faq_edit_tab_metadetails"/>
+                <block class="Magenuts\Faq\Block\Adminhtml\Faq\Edit\Tab\Visibility" name="faq_edit_tab_visibility"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">faq_edit_tab_form</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">additional_section</argument>
+                    <argument name="block" xsi:type="string">faq_edit_tab_metadetails</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">visibility_section</argument>
+                    <argument name="block" xsi:type="string">faq_edit_tab_visibility</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

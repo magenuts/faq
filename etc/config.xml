@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <faq>
+            <general>
+                <enable>1</enable>
+                <header_link>1</header_link>
+                <footer_link>1</footer_link>
+                <page_url>faq</page_url>
+                <link_title>FAQs</link_title>
+                <page_title>FAQ's</page_title>
+                <page_description>FAQ's</page_description>
+                <meta_title>FAQs</meta_title>
+                <meta_keywords>FAQs</meta_keywords>
+                <meta_description>FAQs</meta_description>
+                <page_layout>1column</page_layout>
+                <display_mode>normal</display_mode>
+                <category_navigation_menu>0</category_navigation_menu>
+                <category_url_prefix>category</category_url_prefix>
+                <category_url_suffix>html</category_url_suffix>
+                <top_question_navigation_menu>0</top_question_navigation_menu>
+                <view>expanded</view>
+            </general>
+        </faq>
+    </default>
+</config>
